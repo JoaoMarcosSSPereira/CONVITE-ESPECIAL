@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Um Convite Especial</title>
+    <title>Aceitar Convite</title>
     
     <style>
         /* Importando fontes do Google para um visual mais elegante */
@@ -27,7 +27,7 @@
         .card-wrapper {
             position: relative;
             width: 100%;
-            max-width: 480px; /* Aumentei um pouco para o texto novo */
+            max-width: 480px;
         }
 
         /* Estilo base para os containers (Convite e CV) */
@@ -73,7 +73,7 @@
             justify-content: center;
             gap: 1rem;
             margin-top: 2rem;
-            height: 50px;
+            min-height: 70px; /* Aumentado para acomodar o botão mais alto */
             align-items: center;
         }
 
@@ -104,6 +104,10 @@
         #noBtn {
             background-color: #dc3545;
             transition: all 0.5s ease;
+            /* Estilos para acomodar o texto longo */
+            white-space: normal;
+            line-height: 1.3;
+            padding: 0.6rem 1.2rem;
         }
         #noBtn:hover {
              background-color: #c82333;
@@ -112,6 +116,9 @@
         /* Estilos da seção Poética */
         #cv-container {
             text-align: left;
+            /* Novas propriedades para a barra de rolagem */
+            max-height: 80vh; /* Limita a altura máxima */
+            overflow-y: auto; /* Adiciona rolagem vertical se necessário */
         }
 
         #cv-container h2 {
@@ -199,6 +206,25 @@
             100% { opacity: 0; transform: translateY(-30px); }
         }
 
+        /* Estilização customizada da barra de rolagem (para navegadores Webkit) */
+        #cv-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #cv-container::-webkit-scrollbar-track {
+            background: #fdf6f7;
+            border-radius: 10px;
+        }
+
+        #cv-container::-webkit-scrollbar-thumb {
+            background-color: #e28ca2;
+            border-radius: 10px;
+            border: 2px solid #fdf6f7;
+        }
+        #cv-container::-webkit-scrollbar-thumb:hover {
+            background-color: #d6336c;
+        }
+
     </style>
 </head>
 <body>
@@ -206,31 +232,31 @@
     <div class="card-wrapper">
         <!-- Container do Convite Inicial -->
         <div id="invite-container" class="card">
-            <h1>Quer ser feliz mais eu?</h1>
+            <h1>Vamos quebrar a rotina?</h1>
             <img class="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTY0ajAyb3FzNmQ4eTVtOHE3ZDJicWJzZTV1MndxbnVpY2FjcjF2eSZlcD12MV9pbnRlcm5hbF_naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Ursinho fofo com coração">
             <div class="button-container">
                 <button id="yesBtn">Sim!</button>
-                <button id="noBtn">Não</button>
+                <button id="noBtn">Duvido você clicar no não</button>
             </div>
         </div>
 
         <!-- Container Poético (inicialmente oculto) -->
         <div id="cv-container" class="card hidden">
-            <h2>Razões Para Um 'Sim'</h2>
-            <p>Uma proposta formal para compartilhar momentos e, quem sabe, um futuro.</p>
+            <h2>Análise da Proposta</h2>
+            <p>Um convite para uma parceria estratégica, com o objetivo de gerar bons momentos.</p>
             
-            <strong>O Que Sei Fazer de Melhor:</strong>
+            <strong>Cláusulas da Parceria:</strong>
             <ul>
-                <li>Arquitetar sorrisos com planos infalíveis (ou quase).</li>
-                <li>Compilar bons momentos e armazená-los na memória.</li>
-                <li>Depurar qualquer tristeza com uma conversa ou um abraço.</li>
+                <li>Flexibilidade total: de um café expresso a uma expedição urbana sem rumo.</li>
+                <li>Garantia de boas histórias (ou do silêncio confortável, o que for melhor).</li>
+                <li>O único pré-requisito é a sua companhia.</li>
             </ul>
 
-            <strong>O Que Ofereço:</strong>
+            <strong>Retorno Sobre o Investimento (ROI):</strong>
             <ul>
-                <li>Companhia para dias de sol e expertise em achar o melhor lugar na sombra.</li>
-                <li>Uma playlist para cada momento, da euforia à calmaria.</li>
-                <li>A promessa de que, mesmo nos dias ridículos, haverá amor.</li>
+                <li>Uma pausa garantida na correria do dia a dia.</li>
+                <li>Potencial ilimitado de risadas e conversas interessantes.</li>
+                <li>A chance de transformar um dia comum em uma ótima lembrança.</li>
             </ul>
             
             <div class="poem-container">
@@ -244,8 +270,8 @@
             </div>
 
             <div class="cv-footer">
-                <p>Se a proposta for aprovada, o próximo passo é aqui:</p>
-                <button id="goToWhatsappBtn">Aceitar o Convite</button>
+                <p>Se os termos forem aceitos, o contrato é assinado aqui:</p>
+                <button id="goToWhatsappBtn">Aceitar a Parceria</button>
             </div>
         </div>
     </div>
@@ -259,7 +285,7 @@
         const cvContainer = document.getElementById('cv-container');
         
         // --- CONSTANTES ---
-        const WHATSAPP_URL = 'https://wa.me/5535999706921?text=Oii!%20Proposta%20analisada%20e%20aceita.%20Vamos%20nessa!%20%3A)';
+        const WHATSAPP_URL = 'https://wa.me/5535999706921?text=Oii!%20Proposta%20analisada%20e%20aceita.%20Vamos%20quebrar%20a%20rotina!%20%3A)';
 
         // --- VARIÁVEIS DE ESTADO DA ANIMAÇÃO ---
         let isOrbiting = false;
@@ -351,28 +377,6 @@
                 yesBtn.style.transform = 'scale(1)';
             }, 300);
         }
-
-        // Ajusta a altura do wrapper para conter o card ativo
-        function adjustWrapperHeight() {
-            const activeCard = document.querySelector('.card:not(.hidden)');
-            const wrapper = document.querySelector('.card-wrapper');
-            if (activeCard && wrapper) {
-                wrapper.style.height = `${activeCard.offsetHeight}px`;
-            }
-        }
-
-        // Ajusta a altura na troca de cards
-        yesBtn.addEventListener('click', () => {
-            inviteContainer.classList.add('hidden');
-            cvContainer.classList.remove('hidden');
-            // Dá um tempo para a transição de opacidade acontecer antes de ajustar a altura
-            setTimeout(adjustWrapperHeight, 50);
-        });
-
-        // Ajusta a altura inicial
-        window.addEventListener('load', adjustWrapperHeight);
-        window.addEventListener('resize', adjustWrapperHeight);
-
     </script>
 
 </body>
