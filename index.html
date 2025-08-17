@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Um Convite Especial</title>
+    
+    <style>
+        /* Importando fontes do Google para um visual mais elegante */
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;700&display=swap');
+
+        /* Reset básico e estilos globais */
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        /* Wrapper para os cards. Este será o item centralizado pelo Flexbox. */
+        .card-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 480px; /* Aumentei um pouco para o texto novo */
+        }
+
+        /* Estilo base para os containers (Convite e CV) */
+        .card {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 2rem 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.6s ease-out;
+        }
+
+        /* Classe para esconder/mostrar os cards */
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Título principal com a fonte cursiva */
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #d6336c;
+            font-size: clamp(2rem, 8vw, 2.8rem);
+            margin-bottom: 1rem;
+        }
+
+        .gif {
+            width: 150px;
+            height: 150px;
+            margin: 1.5rem auto;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(214, 51, 108, 0.3);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            height: 50px;
+            align-items: center;
+        }
+
+        button {
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #yesBtn, #goToWhatsappBtn {
+            background-color: #28a745;
+        }
+        #yesBtn:hover, #goToWhatsappBtn:hover {
+             background-color: #218838;
+        }
+
+        #noBtn {
+            background-color: #dc3545;
+            transition: all 0.5s ease;
+        }
+        #noBtn:hover {
+             background-color: #c82333;
+        }
+        
+        /* Estilos da seção Poética */
+        #cv-container {
+            text-align: left;
+        }
+
+        #cv-container h2 {
+            text-align: center;
+            color: #333;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        #cv-container p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        #cv-container ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        #cv-container li {
+            background-color: #f8f0f2;
+            border-left: 4px solid #d6336c;
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #444;
+        }
+
+        #cv-container strong {
+            display: block;
+            text-align: center;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .cv-footer {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .poem-container {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        .poem-container blockquote {
+            margin: 0;
+            padding: 0;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        .poem-container cite {
+            display: block;
+            text-align: right;
+            margin-top: 1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .error-message {
+            position: fixed;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeAndMoveUp 1.5s ease-out forwards;
+        }
+        
+        @keyframes fadeAndMoveUp {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-30px); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="card-wrapper">
+        <!-- Container do Convite Inicial -->
+        <div id="invite-container" class="card">
+            <h1>Quer ser feliz mais eu?</h1>
+            <img class="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTY0ajAyb3FzNmQ4eTVtOHE3ZDJicWJzZTV1MndxbnVpY2FjcjF2eSZlcD12MV9pbnRlcm5hbF_naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Ursinho fofo com coração">
+            <div class="button-container">
+                <button id="yesBtn">Sim!</button>
+                <button id="noBtn">Não</button>
+            </div>
+        </div>
+
+        <!-- Container Poético (inicialmente oculto) -->
+        <div id="cv-container" class="card hidden">
+            <h2>Razões Para Um 'Sim'</h2>
+            <p>Uma proposta formal para compartilhar momentos e, quem sabe, um futuro.</p>
+            
+            <strong>O Que Sei Fazer de Melhor:</strong>
+            <ul>
+                <li>Arquitetar sorrisos com planos infalíveis (ou quase).</li>
+                <li>Compilar bons momentos e armazená-los na memória.</li>
+                <li>Depurar qualquer tristeza com uma conversa ou um abraço.</li>
+            </ul>
+
+            <strong>O Que Ofereço:</strong>
+            <ul>
+                <li>Companhia para dias de sol e expertise em achar o melhor lugar na sombra.</li>
+                <li>Uma playlist para cada momento, da euforia à calmaria.</li>
+                <li>A promessa de que, mesmo nos dias ridículos, haverá amor.</li>
+            </ul>
+            
+            <div class="poem-container">
+                <blockquote>
+                    "Todas as cartas de amor são<br>
+                    Ridículas.<br>
+                    Não seriam cartas de amor se não fossem<br>
+                    Ridículas."
+                </blockquote>
+                <cite>Álvaro de Campos (Fernando Pessoa)</cite>
+            </div>
+
+            <div class="cv-footer">
+                <p>Se a proposta for aprovada, o próximo passo é aqui:</p>
+                <button id="goToWhatsappBtn">Aceitar o Convite</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- ELEMENTOS DO DOM ---
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const goToWhatsappBtn = document.getElementById('goToWhatsappBtn');
+        const inviteContainer = document.getElementById('invite-container');
+        const cvContainer = document.getElementById('cv-container');
+        
+        // --- CONSTANTES ---
+        const WHATSAPP_URL = 'https://wa.me/5535999706921?text=Oii!%20Proposta%20analisada%20e%20aceita.%20Vamos%20nessa!%20%3A)';
+
+        // --- VARIÁVEIS DE ESTADO DA ANIMAÇÃO ---
+        let isOrbiting = false;
+        let angle = 0;
+        let animationFrameId = null;
+        let orbitTimeout = null;
+
+        // --- FUNÇÕES DE EVENTO ---
+        
+        yesBtn.addEventListener('click', () => {
+            inviteContainer.classList.add('hidden');
+            cvContainer.classList.remove('hidden');
+        });
+
+        goToWhatsappBtn.addEventListener('click', () => {
+            window.location.href = WHATSAPP_URL;
+        });
+
+        noBtn.addEventListener('mouseover', startOrbit);
+        noBtn.addEventListener('click', startOrbit);
+
+        // --- LÓGICA DA ANIMAÇÃO ---
+
+        function startOrbit() {
+            clearTimeout(orbitTimeout);
+            if (isOrbiting) return;
+            isOrbiting = true;
+
+            showErrorMessage(noBtn.getBoundingClientRect());
+            incentivizeYesButton();
+
+            noBtn.style.position = 'fixed';
+            animateOrbit();
+
+            orbitTimeout = setTimeout(stopOrbit, 5000);
+        }
+
+        function stopOrbit() {
+            cancelAnimationFrame(animationFrameId);
+            isOrbiting = false;
+            animationFrameId = null;
+
+            noBtn.style.position = '';
+            noBtn.style.left = '';
+            noBtn.style.top = '';
+        }
+
+        function animateOrbit() {
+            const btnRect = noBtn.getBoundingClientRect();
+            const centerX = (window.innerWidth - btnRect.width) / 2;
+            const centerY = (window.innerHeight - btnRect.height) / 2;
+            const radiusX = centerX * 0.8;
+            const radiusY = centerY * 0.8;
+
+            angle += 0.03;
+
+            const newX = centerX + radiusX * Math.cos(angle);
+            const newY = centerY + radiusY * Math.sin(angle);
+
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+
+            animationFrameId = requestAnimationFrame(animateOrbit);
+        }
+        
+        // --- FUNÇÕES AUXILIARES ---
+
+        function showErrorMessage(buttonRect) {
+            const message = document.createElement('div');
+            message.textContent = 'ERROU!';
+            message.classList.add('error-message');
+            
+            message.style.left = `${buttonRect.left + buttonRect.width / 2}px`;
+            message.style.top = `${buttonRect.top + buttonRect.height / 2}px`;
+            message.style.transform = 'translate(-50%, -50%)';
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                if (message.parentNode) {
+                    message.parentNode.removeChild(message);
+                }
+            }, 1500);
+        }
+
+        function incentivizeYesButton() {
+            yesBtn.style.transform = 'scale(1.15)';
+            setTimeout(() => {
+                yesBtn.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        // Ajusta a altura do wrapper para conter o card ativo
+        function adjustWrapperHeight() {
+            const activeCard = document.querySelector('.card:not(.hidden)');
+            const wrapper = document.querySelector('.card-wrapper');
+            if (activeCard && wrapper) {
+                wrapper.style.height = `${activeCard.offsetHeight}px`;
+            }
+        }
+
+        // Ajusta a altura na troca de cards
+        yesBtn.addEventListener('click', () => {
+            inviteContainer.classList.add('hidden');
+            cvContainer.classList.remove('hidden');
+            // Dá um tempo para a transição de opacidade acontecer antes de ajustar a altura
+            setTimeout(adjustWrapperHeight, 50);
+        });
+
+        // Ajusta a altura inicial
+        window.addEventListener('load', adjustWrapperHeight);
+        window.addEventListener('resize', adjustWrapperHeight);
+
+    </script>
+
+</body>
+</html>
